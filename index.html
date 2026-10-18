@@ -1,12 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Backend Dev</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="description" content="Backend-Dev.com — practical backend engineering, APIs, Java, Spring Boot, microservices, and system design." />
+  <title>Backend-Dev.com | Build Better Backends</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: rgba(19, 28, 51, .78);
+      --panel-solid: #131c33;
+      --text: #f3f6ff;
+      --muted: #a7b2cc;
+      --accent: #79f2c0;
+      --accent-2: #7aa7ff;
+      --line: rgba(166, 190, 230, .16);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(ellipse at 75% 5%, rgba(76, 109, 255, .17), transparent 36rem),
+        radial-gradient(ellipse at 10% 35%, rgba(41, 219, 160, .09), transparent 32rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(16px); background: rgba(11, 16, 32, .78); border-bottom: 1px solid var(--line); }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.04em; }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; color: #07121a; background: linear-gradient(135deg, var(--accent), var(--accent-2)); font-size: 18px; }
+    .brand span:last-child { font-size: 18px; }
+    .brand em { color: var(--accent); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 27px; color: var(--muted); font-size: 14px; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta, .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: 12px; padding: 12px 17px; font-weight: 750; font-size: 14px; transition: transform .2s, opacity .2s; }
+    .nav-cta, .button-primary { background: var(--accent); color: #07151a; }
+    .button-secondary { border: 1px solid var(--line); background: rgba(255,255,255,.03); color: var(--text); }
+    .button:hover, .nav-cta:hover { transform: translateY(-2px); opacity: .92; }
+    .hero { padding: 92px 0 80px; display: grid; grid-template-columns: 1.05fr .95fr; gap: 52px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(121,242,192,.25); background: rgba(121,242,192,.07); color: var(--accent); padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+    h1 { font-size: clamp(42px, 5.5vw, 68px); line-height: 1.04; letter-spacing: -.06em; margin: 22px 0; }
+    h1 .gradient { background: linear-gradient(100deg, var(--accent), #9bc5ff 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero-copy { color: var(--muted); font-size: 17px; max-width: 590px; margin: 0 0 28px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .proof { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 30px; color: var(--muted); font-size: 13px; }
+    .proof span::before { content: "✓"; color: var(--accent); margin-right: 8px; font-weight: 900; }
+    .terminal-wrap { position: relative; }
+    .glow { position: absolute; inset: 12% 4%; background: #527cff; filter: blur(70px); opacity: .18; pointer-events: none; }
+    .terminal { position: relative; overflow: hidden; border: 1px solid rgba(166,190,230,.24); border-radius: 20px; background: rgba(9, 14, 28, .88); box-shadow: 0 28px 90px rgba(0,0,0,.32); transform: perspective(1000px) rotateY(-3deg) rotateX(2deg); }
+    .terminal-bar { display: flex; align-items: center; gap: 7px; padding: 15px 18px; border-bottom: 1px solid var(--line); color: #8997b5; font-size: 12px; }
+    .traffic { width: 9px; height: 9px; border-radius: 50%; background: #ff6e7a; }
+    .traffic:nth-child(2) { background: #ffca6a; } .traffic:nth-child(3) { background: #79f2c0; }
+    .terminal-title { margin-left: auto; }
+    pre { margin: 0; padding: 25px 24px 28px; overflow: auto; color: #dbe5ff; font: 13px/1.95 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .comment { color: #7788a9; } .keyword { color: #c49bff; } .function { color: #79f2c0; } .string { color: #f7c779; } .number { color: #8db7ff; }
+    .terminal-status { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding: 13px 20px; color: #91a1c1; font-size: 11px; }
+    .status-good { color: var(--accent); }
+    section { padding: 72px 0; }
+    .section-heading { max-width: 680px; margin-bottom: 34px; }
+    .kicker { color: var(--accent); font-size: 12px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    h2 { font-size: clamp(30px, 4vw, 44px); line-height: 1.13; letter-spacing: -.045em; margin: 10px 0 13px; }
+    .section-heading p { color: var(--muted); margin: 0; font-size: 16px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .card { border: 1px solid var(--line); border-radius: var(--radius); padding: 25px; background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.015)); }
+    .card-icon { width: 45px; height: 45px; display: grid; place-items: center; border-radius: 13px; background: rgba(121,242,192,.09); color: var(--accent); font-size: 21px; margin-bottom: 18px; }
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .card p { color: var(--muted); margin: 0; font-size: 14px; }
+    .stack-section { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255,255,255,.018); }
+    .stack { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 28px; }
+    .chip { border: 1px solid var(--line); border-radius: 11px; padding: 10px 14px; background: rgba(255,255,255,.025); color: #d8e2f8; font-size: 13px; font-weight: 650; }
+    .project-card { display: flex; flex-direction: column; min-height: 235px; }
+    .project-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+    .project-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); font-weight: 800; }
+    .project-card .stack { margin-top: auto; padding-top: 22px; gap: 7px; }
+    .project-card .chip { font-size: 11px; padding: 5px 8px; }
+    .cta-panel { display: flex; align-items: center; justify-content: space-between; gap: 28px; border: 1px solid rgba(121,242,192,.22); border-radius: 26px; padding: 38px; background: radial-gradient(ellipse at 100% 0%, rgba(122,167,255,.12), transparent 50%), rgba(121,242,192,.04); }
+    .cta-panel p { color: var(--muted); max-width: 600px; margin: 0; }
+    footer { border-top: 1px solid var(--line); padding: 26px 0; color: var(--muted); font-size: 12px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 18px; }
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding-top: 65px; gap: 40px; }
+      .terminal { transform: none; }
+      .cards { grid-template-columns: 1fr; }
+      .cta-panel { flex-direction: column; align-items: flex-start; padding: 28px; }
+      section { padding: 55px 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+  </style>
 </head>
 <body>
-  <h1>Yedi My Darling</h1>
-  <p>I Love You Yedi!</p>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Backend Dev home">
+        <span class="brand-mark">&lt;/&gt;</span>
+        <span>backend<em>-dev</em>.com</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#what-we-do">What you'll learn</a>
+        <a href="#technology">Technology</a>
+        <a href="#projects">Projects</a>
+      </nav>
+      <a class="nav-cta" href="#get-started">Explore the site <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="home">
+    <div class="container hero">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Built for backend builders</div>
+        <h1>Build reliable backends.<br /><span class="gradient">Ship with confidence.</span></h1>
+        <p class="hero-copy">A practical home for backend engineering — from clean APIs and Java services to microservices, databases, cloud deployment, and system design.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#what-we-do">Explore topics <span aria-hidden="true">→</span></a>
+          <a class="button button-secondary" href="#projects">View project ideas</a>
+        </div>
+        <div class="proof">
+          <span>Practical engineering</span>
+          <span>Modern backend stack</span>
+          <span>Built to scale</span>
+        </div>
+      </div>
+
+      <div class="terminal-wrap" aria-label="Example backend API code window">
+        <div class="glow"></div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="traffic"></span><span class="traffic"></span><span class="traffic"></span>
+            <span class="terminal-title">OrderController.java</span>
+          </div>
+          <pre><span class="comment">// A small API. A solid foundation.</span>
+<span class="keyword">@RestController</span>
+<span class="keyword">@RequestMapping</span>(<span class="string">"/api/v1/orders"</span>)
+<span class="keyword">public class</span> <span class="function">OrderController</span> {
+
+  <span class="keyword">private final</span> OrderService orderService;
+
+  <span class="keyword">public</span> OrderController(
+      OrderService orderService) {
+    <span class="keyword">this</span>.orderService = orderService;
+  }
+
+  <span class="keyword">@GetMapping</span>(<span class="string">"/{id}"</span>)
+  <span class="keyword">public</span> ResponseEntity&lt;OrderDto&gt; <span class="function">getOrder</span>(
+      <span class="keyword">@PathVariable</span> Long id) {
+    <span class="keyword">return</span> ResponseEntity.ok(
+        orderService.findById(id));
+  }
+}</pre>
+          <div class="terminal-status"><span>● Spring Boot API</span><span class="status-good">READY TO BUILD</span></div>
+        </div>
+      </div>
+    </div>
+
+    <section id="what-we-do">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">The backend toolkit</div>
+          <h2>From first endpoint to production systems.</h2>
+          <p>Learn and build the pieces that make backend applications secure, maintainable, observable, and ready for real-world traffic.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">⌘</div>
+            <h3>API Engineering</h3>
+            <p>Design REST APIs, structure DTOs, validate requests, handle errors consistently, and document endpoints clearly.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">◇</div>
+            <h3>Microservices</h3>
+            <p>Explore service boundaries, API gateways, asynchronous messaging, caching, resilience, and service-to-service communication.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">▤</div>
+            <h3>Data & Performance</h3>
+            <p>Work with SQL, indexes, transactions, ORM trade-offs, connection pools, and performance troubleshooting.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section" id="technology">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Technology</div>
+          <h2>A modern backend stack.</h2>
+          <p>Core tools for building, testing, deploying, and operating production-ready services.</p>
+        </div>
+        <div class="stack" aria-label="Technology stack">
+          <span class="chip">Java 21</span><span class="chip">Spring Boot</span><span class="chip">Spring Security</span>
+          <span class="chip">REST APIs</span><span class="chip">Microservices</span><span class="chip">Hibernate / JPA</span>
+          <span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Redis</span>
+          <span class="chip">Apache Kafka</span><span class="chip">Maven</span><span class="chip">Docker</span>
+          <span class="chip">Kubernetes</span><span class="chip">Jenkins</span><span class="chip">AWS</span><span class="chip">Git</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Build by doing</div>
+          <h2>Project ideas worth shipping.</h2>
+          <p>Use these as a starting point for hands-on practice. Add authentication, tests, observability, and deployment as you grow.</p>
+        </div>
+        <div class="cards">
+          <article class="card project-card">
+            <div class="project-top"><span class="project-label">01 / API</span><span aria-hidden="true">↗</span></div>
+            <h3>E-commerce REST API</h3>
+            <p>Products, carts, orders, user accounts, validation, pagination, and secure role-based access.</p>
+            <div class="stack"><span class="chip">Spring Boot</span><span class="chip">JPA</span><span class="chip">MySQL</span></div>
+          </article>
+          <article class="card project-card">
+            <div class="project-top"><span class="project-label">02 / Distributed</span><span aria-hidden="true">↗</span></div>
+            <h3>Order Processing System</h3>
+            <p>Separate services for orders and payments, event-driven workflows, retries, and idempotency.</p>
+            <div class="stack"><span class="chip">Kafka</span><span class="chip">Redis</span><span class="chip">Microservices</span></div>
+          </article>
+          <article class="card project-card">
+            <div class="project-top"><span class="project-label">03 / Platform</span><span aria-hidden="true">↗</span></div>
+            <h3>Production Deployment</h3>
+            <p>Automate builds and tests, package services, deploy to a cluster, and add health checks and logs.</p>
+            <div class="stack"><span class="chip">Docker</span><span class="chip">Jenkins</span><span class="chip">Kubernetes</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="get-started">
+      <div class="container">
+        <div class="cta-panel">
+          <div>
+            <div class="kicker">Your next commit starts here</div>
+            <h2>Think clearly. Build simply. Scale thoughtfully.</h2>
+            <p>Backend-Dev.com is ready for your tutorials, project write-ups, API documentation, and engineering notes. Start with one useful resource and keep improving it.</p>
+          </div>
+          <a class="button button-primary" href="mailto:hello@backend-dev.com">Get in touch <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <a class="brand" href="#home"><span class="brand-mark">&lt;/&gt;</span><span>backend<em>-dev</em>.com</span></a>
+      <span>© <span id="year"></span> Backend-Dev.com. Built for backend builders.</span>
+      <div class="footer-links"><a href="#what-we-do">Topics</a><a href="#projects">Projects</a><a href="#home">Back to top ↑</a></div>
+    </div>
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
